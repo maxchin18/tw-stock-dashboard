@@ -152,13 +152,13 @@ export function renderKline(a) {
 }
 
 /* ---------- 03 / 05 雷達 ---------- */
-function radarOption(axes, color, center, p) {
+function radarOption(axes, color, center, p, radius = '64%') {
   return {
     backgroundColor: 'transparent',
     tooltip: { ...tooltipStyle(p), formatter: () => axes.map((x) => `${x.name}：<b>${fmt(x.score, 0)}</b>`).join('<br>') },
     radar: {
       indicator: axes.map((x) => ({ name: x.name, max: 100 })),
-      radius: '64%', center: ['50%', '54%'],
+      radius, center: ['50%', '54%'],
       axisName: { color: p.text2, fontSize: 11, fontWeight: 600 },
       splitLine: { lineStyle: { color: p.grid } },
       splitArea: { areaStyle: { color: [alpha(color, 0.03), 'transparent'] } },
@@ -180,7 +180,7 @@ export function renderRadar(a) {
 
 export function renderRisk(a) {
   const p = palette();
-  set('chart-risk', radarOption(a.riskRadar.axes, p.blue, null, p));
+  set('chart-risk', radarOption(a.riskRadar.axes, p.blue, null, p, '54%'));
 }
 
 /* ---------- 04 熱區圖 ---------- */
@@ -252,7 +252,7 @@ export function renderCost(a) {
     backgroundColor: 'transparent',
     tooltip: { trigger: 'axis', ...tooltipStyle(p), valueFormatter: (v) => `${fmt(v, 1)}%` },
     legend: { top: 0, right: 0, icon: 'roundRect', itemWidth: 10, itemHeight: 8, textStyle: { color: p.text2, fontSize: 10 } },
-    grid: { left: 8, right: 8, top: 40, bottom: 20, containLabel: true },
+    grid: { left: 8, right: 8, top: 46, bottom: 20, containLabel: true },
     xAxis: { type: 'category', data: c.dates.map(shortDate), boundaryGap: false, ...baseAxis(p), splitLine: { show: false }, axisLabel: { color: p.muted, fontSize: 10 } },
     yAxis: { type: 'value', max: 100, ...baseAxis(p), axisLine: { show: false }, axisLabel: { color: p.muted, fontSize: 10, formatter: '{value}%' } },
     series: order.map((k) => ({
@@ -296,14 +296,14 @@ export function renderGauge(a) {
   set('chart-gauge', {
     backgroundColor: 'transparent',
     series: [{
-      type: 'gauge', startAngle: 200, endAngle: -20, min: 0, max: 100, radius: '105%', center: ['50%', '68%'],
+      type: 'gauge', startAngle: 200, endAngle: -20, min: 0, max: 100, radius: '100%', center: ['50%', '60%'],
       axisLine: { lineStyle: { width: 16, color: [[0.4, alpha(p.down, 0.85)], [0.6, alpha(p.amber, 0.85)], [1, alpha(p.up, 0.85)]] } },
-      pointer: { length: '58%', width: 5, itemStyle: { color: p.text } },
+      pointer: { length: '52%', width: 4, itemStyle: { color: p.text } },
       anchor: { show: true, size: 10, itemStyle: { color: p.text } },
       axisTick: { show: false }, splitLine: { show: false },
       axisLabel: { show: true, distance: -30, color: p.muted, fontSize: 9, formatter: (x) => (x === 0 || x === 50 || x === 100 ? x : '') },
-      detail: { valueAnimation: true, formatter: (x) => (v == null ? '—' : `${Math.round(x)}`), offsetCenter: [0, '20%'], color: p.text, fontSize: 24, fontWeight: 800 },
-      title: { show: true, offsetCenter: [0, '58%'], color: p.muted, fontSize: 11, fontWeight: 700 },
+      detail: { valueAnimation: true, formatter: (x) => (v == null ? '—' : `${Math.round(x)}`), offsetCenter: [0, '48%'], color: p.text, fontSize: 22, fontWeight: 800 },
+      title: { show: true, offsetCenter: [0, '84%'], color: p.muted, fontSize: 11, fontWeight: 700 },
       data: [{ value: v == null ? 0 : v, name: `市場情緒：${a.sentiment.label}` }],
     }],
   });

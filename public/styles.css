@@ -198,8 +198,8 @@ body.capturing .bg-blobs { display: none; }
   padding: 2px 7px; border-radius: 7px; letter-spacing: .5px;
 }
 :root[data-theme="dark"] .pno { background: linear-gradient(135deg, #f2f2f7, #b9b9c6); color: #111; }
-.panel-head h3 { font-size: 14.5px; font-weight: 800; }
-.psub { font-size: 11px; color: var(--muted); font-weight: 600; margin-left: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.panel-head h3 { font-size: 14.5px; font-weight: 800; white-space: nowrap; }
+.psub { flex: 1 1 auto; min-width: 0; font-size: 11px; color: var(--muted); font-weight: 600; margin-left: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .panel-head .dl { margin-left: auto; width: 28px; height: 28px; font-size: 13px; border-radius: 9px; }
 .panel-body { padding: 6px 14px 14px; flex: 1; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
 .chart { width: 100%; min-height: 120px; }
@@ -232,11 +232,11 @@ body.capturing .bg-blobs { display: none; }
 .score-line { font-weight: 800; text-align: center; color: var(--blue); font-size: 14px; }
 
 /* 熱區圖 */
-.heat-wrap { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: start; }
-.heat-legend { list-style: none; margin: 0; padding: 4px 0 0; display: flex; flex-direction: column; gap: 8px; font-size: 11.5px; width: 92px; }
-.heat-legend li { display: flex; gap: 6px; align-items: flex-start; line-height: 1.25; }
-.heat-legend i { flex: none; width: 10px; height: 10px; border-radius: 3px; margin-top: 3px; }
-.heat-legend b { display: block; font-size: 12.5px; }
+.heat-wrap { display: flex; flex-direction: column; gap: 6px; }
+.heat-legend { list-style: none; margin: 0; padding: 4px 0 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px 8px; font-size: 11px; }
+.heat-legend li { display: flex; gap: 5px; align-items: center; white-space: nowrap; }
+.heat-legend i { flex: none; width: 9px; height: 9px; border-radius: 3px; }
+.heat-legend b { margin-left: 4px; font-size: 12px; }
 
 /* 法人 */
 .inst-wrap { display: grid; grid-template-columns: 1.3fr 1fr; gap: 12px; align-items: start; }

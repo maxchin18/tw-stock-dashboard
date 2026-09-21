@@ -68,8 +68,9 @@ export function fmtInt(v) {
 
 export function fmtSigned(v, d = 2) {
   if (v == null || !Number.isFinite(v)) return '—';
-  const s = fmt(Math.abs(v), d);
-  return v > 0 ? `+${s}` : v < 0 ? `-${s}` : s;
+  const r = round(v, d); // 先四捨五入再決定正負，避免顯示 "-0"
+  const s = fmt(Math.abs(r), d);
+  return r > 0 ? `+${s}` : r < 0 ? `-${s}` : s;
 }
 
 export function fmtPct(v, d = 2) {
