@@ -1,0 +1,19 @@
+{
+  "name": "tw-stock-dashboard",
+  "version": "1.0.0",
+  "description": "台股即時主力分析儀表板 — 輸入股票代碼即時抓取 TWSE / TPEx / FinMind 資料，零相依套件的 Node.js 專案",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node --test",
+    "test:live": "cross-env-not-needed",
+    "verify": "node scripts/verify-live.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": ["taiwan", "stock", "twse", "tpex", "finmind", "dashboard", "realtime", "sse"],
+  "license": "MIT"
+}

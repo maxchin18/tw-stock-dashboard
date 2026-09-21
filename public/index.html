@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>台股即時主力分析儀表板</title>
+<meta name="description" content="輸入台股代碼，即時抓取 TWSE / TPEx / FinMind 公開資料並即時更新的主力分析儀表板。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23111'/%3E%3Cpath d='M14 40l10-12 8 8 18-20' stroke='%23fff' stroke-width='6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.6.0/dist/echarts.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
+</head>
+<body>
+<div class="bg-blobs" aria-hidden="true"><span class="blob blob-pink"></span><span class="blob blob-blue"></span><span class="blob blob-sand"></span></div>
+
+<div id="capture-root">
+<header class="topbar glass">
+  <div class="brand">
+    <div class="logo" aria-hidden="true">TW</div>
+    <div>
+      <div class="brand-title">台股即時主力分析儀表板</div>
+      <div class="brand-sub">TW STOCK LIVE · MAIN FORCE TRACKER</div>
+    </div>
+  </div>
+  <div class="status-badges">
+    <span class="badge" id="badge-live"><i class="dot"></i>AI SCAN <b>IDLE</b></span>
+    <span class="badge" id="badge-force">MAIN FORCE <b>—</b></span>
+    <span class="badge" id="badge-market">MARKET <b>—</b></span>
+    <span class="badge" id="badge-vol">VOLATILITY <b>—</b></span>
+  </div>
+  <form class="search" id="search-form" autocomplete="off" role="search">
+    <input id="code-input" class="code-input" placeholder="代碼 / 名稱" maxlength="20" spellcheck="false" aria-label="股票代碼或名稱">
+    <div class="stock-name" id="stock-name">—</div>
+    <button type="submit" class="btn-primary" id="analyze-btn">分析</button>
+    <ul class="suggest" id="suggest" hidden></ul>
+  </form>
+  <button class="icon-btn theme-toggle" id="theme-toggle" title="切換深色 / 淺色" aria-label="切換主題">◐</button>
+</header>
+
+<section class="kpi-strip glass" id="kpi" aria-live="polite">
+  <div class="kpi"><span class="k-label" id="kpi-close-label">今日收盤價</span><span class="k-value big" id="kpi-close">—</span></div>
+  <div class="kpi"><span class="k-label">今日漲跌</span><span class="k-value" id="kpi-change">—</span></div>
+  <div class="kpi"><span class="k-label">今日漲幅</span><span class="k-value" id="kpi-changepct">—</span></div>
+  <div class="kpi"><span class="k-label">成交量(張)</span><span class="k-value" id="kpi-volume">—</span></div>
+  <div class="kpi"><span class="k-label">成交筆數</span><span class="k-value" id="kpi-turnover">—</span></div>
+  <div class="kpi"><span class="k-label">開盤</span><span class="k-value" id="kpi-open">—</span></div>
+  <div class="kpi"><span class="k-label">最高</span><span class="k-value" id="kpi-high">—</span></div>
+  <div class="kpi"><span class="k-label">最低</span><span class="k-value" id="kpi-low">—</span></div>
+  <div class="kpi"><span class="k-label">最新交易日</span><span class="k-value" id="kpi-date">—</span></div>
+  <div class="kpi"><span class="k-label">資料筆數</span><span class="k-value" id="kpi-bars">—</span></div>
+</section>
+
+<section class="toolbar">
+  <div class="sources" id="sources">資料來源：TWSE MIS 即時報價 · TWSE / TPEx 日成交 · FinMind 法人 / 融資券 / 當沖</div>
+  <div class="range" id="range">—</div>
+  <div class="actions">
+    <button class="btn" id="dl-dashboard">⤓ 下載儀表板 PNG</button>
+    <button class="btn" id="dl-charts">⤓ 下載全部圖表 PNG</button>
+    <button class="btn" id="dl-csv">⤓ 下載資料 CSV</button>
+    <button class="btn" id="dl-html">⤓ 下載離線報告 HTML</button>
+    <button class="btn" id="print-btn">🖨 列印 / PDF</button>
+  </div>
+</section>
+
+<div class="notice" id="notice" hidden></div>
+
+<main class="grid" id="dashboard">
+
+  <article class="panel glass span-10" id="p01">
+    <header class="panel-head"><span class="pno">01</span><h3>主K線圖</h3><span class="psub">AI 主力行為判讀系統</span><button class="icon-btn dl" data-dl="p01" title="下載此面板 PNG">⤓</button></header>
+    <div class="panel-body">
+      <div class="chart" id="chart-k" style="height:380px"></div>
+    </div>
+  </article>
+
+  <article class="panel glass span-4" id="p02">
+    <header class="panel-head"><span class="pno">02</span><h3>AI 決策核心</h3><span class="psub">AI DECISION CORE</span><button class="icon-btn dl" data-dl="p02" title="下載此面板 PNG">⤓</button></header>
+    <div class="panel-body">
+      <div class="warn-banner" id="warn-banner">—</div>
+      <dl class="kv" id="decision-kv"></dl>
+    </div>
+  </article>
+
+  <article class="panel glass span-4" id="p03">
+    <header class="panel-head"><span class="pno">03</span><h3>多維度判讀</h3><span class="psub">六維評分</span><button class="icon-btn dl" data-dl="p03" title="下載此面板 PNG">⤓</button></header>
+    <div class="panel-body">
+      <div class="score-line" id="radar-score">綜合評分：—</div>
+      <div class="chart" id="chart-radar" style="height:250px"></div>
+      <div class="foot two" id="radar-foot"></div>
+    </div>
+  </article>
+
+  <article class="panel glass span-3" id="p04">
+    <header class="panel-head"><span class="pno">04</span><h3>AI 籌碼熱區圖</h3><span class="psub">近 60 日價量分布</span><button class="icon-btn dl" data-dl="p04" title="下載此面板 PNG">⤓</button></header>
+    <div class="panel-body">
+      <div class="heat-wrap">
+        <div class="chart" id="chart-heat" style="height:300px"></div>
+        <ul class="heat-legend" id="heat-legend"></ul>
+      </div>
+    </div>
+  </article>
+
+  <article class="panel glass span-3" id="p05">
+    <header class="panel-head"><span class="pno">05</span><h3>風險雷達圖</h3><span class="psub">五維風險</span><button class="icon-btn dl" data-dl="p05" title="下載此面板 PNG">⤓</button></header>
+    <div class="panel-body">
+      <div class="chart" id="chart-risk" style="height:230px"></div>
+      <div class="foot stack" id="risk-foot"></div>
+    </div>
+  </article>
+
+  <article class="panel glass span-6" id="p06">
+    <header class="panel-head"><span class="pno">06</span><h3>累積型 AI 預測路徑圖</h3><span class="psub">依近 60 日報酬統計推估</span><button class="icon-btn dl" data-dl="p06" title="下載此面板 PNG">⤓</button></header>
+    <div class="panel-body">
+      <div class="chart" id="chart-forecast" style="height:240px"></div>
+      <div class="foot two" id="forecast-foot"></div>
+    </div>
+  </article>
+
+  <article class="panel glass span-5" id="p07">
+    <header class="panel-head"><span class="pno">07</span><h3>主力成本結構分布圖</h3><span class="psub">相對現價的 20 日量分布</span><button class="icon-btn dl" data-dl="p07" title="下載此面板 PNG">⤓</button></header>
+    <div class="panel-body">
+      <div class="chart" id="chart-cost" style="height:240px"></div>
+      <div class="foot two" id="cost-foot"></div>
+    </div>
+  </article>
+
+  <article class="panel glass span-9" id="p08">
+    <header class="panel-head"><span class="pno">08</span><h3>法人行為計量</h3><span class="psub">三大法人買賣超（張）</span><button class="icon-btn dl" data-dl="p08" title="下載此面板 PNG">⤓</button></header>
+    <div class="panel-body">
+      <div class="inst-wrap">
+        <div class="chart" id="chart-inst" style="height:230px"></div>
+        <div class="inst-table-wrap"><table class="mini" id="inst-table"></table><div class="tiny muted" id="inst-note"></div></div>
+      </div>
+      <div class="foot two" id="inst-foot"></div>
+    </div>
+  </article>
+
+  <article class="panel glass span-4" id="p09">
+    <header class="panel-head"><span class="pno">09</span><h3>隔日沖風險分析</h3><span class="psub">五項風險因子</span><button class="icon-btn dl" data-dl="p09" title="下載此面板 PNG">⤓</button></header>
+    <div class="panel-body">
+      <ul class="bars" id="nextday-bars"></ul>
+      <div class="foot two" id="nextday-foot"></div>
+    </div>
+  </article>
+
+  <article class="panel glass span-3" id="p10">
+    <header class="panel-head"><span class="pno">10</span><h3>AI 多空能量條</h3><span class="psub">近 20 日</span><button class="icon-btn dl" data-dl="p10" title="下載此面板 PNG">⤓</button></header>
+    <div class="panel-body">
+      <ul class="bars" id="energy-bars"></ul>
+      <div class="foot stack" id="energy-foot"></div>
+    </div>
+  </article>
+
+  <article class="panel glass span-5" id="p11">
+    <header class="panel-head"><span class="pno">11</span><h3>健康度綜合評估表</h3><span class="psub">五項體質</span><button class="icon-btn dl" data-dl="p11" title="下載此面板 PNG">⤓</button></header>
+    <div class="panel-body">
+      <div class="rings" id="health-rings"></div>
+      <div class="foot center" id="health-foot"></div>
+    </div>
+  </article>
+
+  <article class="panel glass span-3" id="p12">
+    <header class="panel-head"><span class="pno">12</span><h3>AI 主力動態信號判斷</h3><span class="psub">信號燈</span><button class="icon-btn dl" data-dl="p12" title="下載此面板 PNG">⤓</button></header>
+    <div class="panel-body">
+      <div class="signal">
+        <div class="traffic" id="traffic"><span class="lamp red"></span><span class="lamp yellow"></span><span class="lamp green"></span></div>
+        <dl class="kv compact" id="signal-kv"></dl>
+      </div>
+    </div>
+  </article>
+
+  <article class="panel glass span-4" id="p13">
+    <header class="panel-head"><span class="pno">13</span><h3>台股市場情緒儀表板</h3><span class="psub">散戶 / 法人 / 主力</span><button class="icon-btn dl" data-dl="p13" title="下載此面板 PNG">⤓</button></header>
+    <div class="panel-body">
+      <div class="gauge-wrap">
+        <div class="chart" id="chart-gauge" style="height:190px"></div>
+        <dl class="kv compact" id="sentiment-kv"></dl>
+      </div>
+    </div>
+  </article>
+
+  <article class="panel glass span-4" id="p14">
+    <header class="panel-head"><span class="pno">14</span><h3>AI 信心維度</h3><span class="psub">含真實回測</span><button class="icon-btn dl" data-dl="p14" title="下載此面板 PNG">⤓</button></header>
+    <div class="panel-body">
+      <ul class="bars blue" id="confidence-bars"></ul>
+    </div>
+  </article>
+
+  <article class="panel glass span-5" id="p15">
+    <header class="panel-head"><span class="pno">15</span><h3>籌碼異動摘要</h3><span class="psub">最近一日法人動向</span><button class="icon-btn dl" data-dl="p15" title="下載此面板 PNG">⤓</button></header>
+    <div class="panel-body">
+      <div class="chip-wrap">
+        <dl class="kv compact" id="chip-kv"></dl>
+        <div class="chart" id="chart-spark" style="height:120px"></div>
+      </div>
+      <div class="foot two" id="chip-foot"></div>
+    </div>
+  </article>
+
+  <article class="panel glass span-7" id="p16">
+    <header class="panel-head"><span class="pno">16</span><h3>買賣力分布圖</h3><span class="psub">法人 vs 散戶</span><button class="icon-btn dl" data-dl="p16" title="下載此面板 PNG">⤓</button></header>
+    <div class="panel-body">
+      <div class="rings big" id="bsp-rings"></div>
+      <div class="foot two" id="bsp-foot"></div>
+    </div>
+  </article>
+
+  <article class="panel glass span-7" id="p17">
+    <header class="panel-head"><span class="pno">17</span><h3>多空強度分布</h3><span class="psub">信號等級</span><button class="icon-btn dl" data-dl="p17" title="下載此面板 PNG">⤓</button></header>
+    <div class="panel-body">
+      <div class="rings big" id="strength-rings"></div>
+      <div class="foot two" id="strength-foot"></div>
+    </div>
+  </article>
+
+  <article class="panel glass span-10" id="p18">
+    <header class="panel-head"><span class="pno">18</span><h3>主力追蹤總評判</h3><span class="psub">MLP-AI 規則式結論</span><button class="icon-btn dl" data-dl="p18" title="下載此面板 PNG">⤓</button></header>
+    <div class="panel-body">
+      <div class="verdict">
+        <div class="verdict-main"><span class="verdict-label">主力語意：</span><b id="verdict-semantic">—</b><span class="tag" id="verdict-tag">—</span></div>
+        <p class="verdict-text" id="verdict-text">—</p>
+      </div>
+    </div>
+  </article>
+</main>
+
+<section class="tabs glass" id="tabs">
+  <nav class="tab-bar" role="tablist">
+    <button class="tab active" data-tab="report" role="tab">📊 任務一：綜合分析報告</button>
+    <button class="tab" data-tab="alerts" role="tab">⚠️ 任務二：技術警示報告</button>
+    <button class="tab" data-tab="kdma" role="tab">📈 任務三：KD + MA 圖表</button>
+    <button class="tab" data-tab="macd" role="tab">📉 任務四：MACD 圖表</button>
+    <button class="tab" data-tab="table" role="tab">🗂 原始資料表</button>
+  </nav>
+  <div class="tab-pane active" data-pane="report" id="tab-report"></div>
+  <div class="tab-pane" data-pane="alerts" id="tab-alerts"></div>
+  <div class="tab-pane" data-pane="kdma"><div class="chart" id="chart-kdma" style="height:420px"></div></div>
+  <div class="tab-pane" data-pane="macd"><div class="chart" id="chart-macd" style="height:420px"></div></div>
+  <div class="tab-pane" data-pane="table"><div class="table-scroll" id="tab-table"></div></div>
+</section>
+
+<footer class="foot-note">
+  <p>本儀表板所有指標皆由公開資料（TWSE、TPEx、FinMind）以固定公式計算，僅供研究參考，不構成投資建議。即時報價依交易所提供，可能有延遲。</p>
+  <p id="engine-note"></p>
+</footer>
+</div>
+
+<div id="toast" class="toast" hidden></div>
+<script type="module" src="/app.js"></script>
+</body>
+</html>
