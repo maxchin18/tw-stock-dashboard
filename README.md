@@ -11,7 +11,7 @@
 ## 快速開始
 
 ```bash
-git clone https://github.com/<你的帳號>/tw-stock-dashboard.git
+git clone https://github.com/maxchin18/tw-stock-dashboard.git
 cd tw-stock-dashboard
 npm start
 ```
