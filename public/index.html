@@ -26,7 +26,7 @@
     </div>
   </div>
   <div class="status-badges">
-    <span class="badge" id="badge-live"><i class="dot"></i>AI SCAN <b>IDLE</b></span>
+    <span class="badge" id="badge-live"><i class="dot"></i>DATA FEED <b>IDLE</b></span>
     <span class="badge" id="badge-force">MAIN FORCE <b>—</b></span>
     <span class="badge" id="badge-market">MARKET <b>—</b></span>
     <span class="badge" id="badge-vol">VOLATILITY <b>—</b></span>
@@ -70,14 +70,14 @@
 <main class="grid" id="dashboard">
 
   <article class="panel glass span-9" id="p01">
-    <header class="panel-head"><span class="pno">01</span><h3>主K線圖</h3><span class="psub">AI 主力行為判讀系統</span><button class="icon-btn dl" data-dl="p01" title="下載此面板 PNG">⤓</button></header>
+    <header class="panel-head"><span class="pno">01</span><h3>主K線圖</h3><span class="psub">主力行為量化判讀</span><button class="icon-btn dl" data-dl="p01" title="下載此面板 PNG">⤓</button></header>
     <div class="panel-body">
       <div class="chart" id="chart-k" style="height:380px"></div>
     </div>
   </article>
 
   <article class="panel glass span-4" id="p02">
-    <header class="panel-head"><span class="pno">02</span><h3>AI 決策核心</h3><span class="psub">AI DECISION CORE</span><button class="icon-btn dl" data-dl="p02" title="下載此面板 PNG">⤓</button></header>
+    <header class="panel-head"><span class="pno">02</span><h3>決策核心</h3><span class="psub">規則式判讀 RULE-BASED</span><button class="icon-btn dl" data-dl="p02" title="下載此面板 PNG">⤓</button></header>
     <div class="panel-body">
       <div class="warn-banner" id="warn-banner">—</div>
       <dl class="kv" id="decision-kv"></dl>
@@ -94,7 +94,7 @@
   </article>
 
   <article class="panel glass span-4" id="p04">
-    <header class="panel-head"><span class="pno">04</span><h3>AI 籌碼熱區圖</h3><span class="psub">近 60 日價量分布</span><button class="icon-btn dl" data-dl="p04" title="下載此面板 PNG">⤓</button></header>
+    <header class="panel-head"><span class="pno">04</span><h3>籌碼熱區圖</h3><span class="psub">近 60 日價量分布</span><button class="icon-btn dl" data-dl="p04" title="下載此面板 PNG">⤓</button></header>
     <div class="panel-body">
       <div class="heat-wrap">
         <div class="chart" id="chart-heat" style="height:236px"></div>
@@ -112,7 +112,7 @@
   </article>
 
   <article class="panel glass span-6" id="p06">
-    <header class="panel-head"><span class="pno">06</span><h3>累積型 AI 預測路徑圖</h3><span class="psub">依近 60 日報酬統計推估</span><button class="icon-btn dl" data-dl="p06" title="下載此面板 PNG">⤓</button></header>
+    <header class="panel-head"><span class="pno">06</span><h3>統計推估路徑圖</h3><span class="psub">依近 60 日報酬統計推估</span><button class="icon-btn dl" data-dl="p06" title="下載此面板 PNG">⤓</button></header>
     <div class="panel-body">
       <div class="chart" id="chart-forecast" style="height:240px"></div>
       <div class="foot two" id="forecast-foot"></div>
@@ -147,7 +147,7 @@
   </article>
 
   <article class="panel glass span-3" id="p10">
-    <header class="panel-head"><span class="pno">10</span><h3>AI 多空能量條</h3><span class="psub">近 20 日</span><button class="icon-btn dl" data-dl="p10" title="下載此面板 PNG">⤓</button></header>
+    <header class="panel-head"><span class="pno">10</span><h3>多空能量條</h3><span class="psub">近 20 日</span><button class="icon-btn dl" data-dl="p10" title="下載此面板 PNG">⤓</button></header>
     <div class="panel-body">
       <ul class="bars" id="energy-bars"></ul>
       <div class="foot stack" id="energy-foot"></div>
@@ -163,7 +163,7 @@
   </article>
 
   <article class="panel glass span-3" id="p12">
-    <header class="panel-head"><span class="pno">12</span><h3>AI 主力動態信號判斷</h3><span class="psub">信號燈</span><button class="icon-btn dl" data-dl="p12" title="下載此面板 PNG">⤓</button></header>
+    <header class="panel-head"><span class="pno">12</span><h3>主力動態信號燈</h3><span class="psub">信號燈</span><button class="icon-btn dl" data-dl="p12" title="下載此面板 PNG">⤓</button></header>
     <div class="panel-body">
       <div class="signal">
         <div class="traffic" id="traffic"><span class="lamp red"></span><span class="lamp yellow"></span><span class="lamp green"></span></div>
@@ -183,7 +183,7 @@
   </article>
 
   <article class="panel glass span-4" id="p14">
-    <header class="panel-head"><span class="pno">14</span><h3>AI 信心維度</h3><span class="psub">含真實回測</span><button class="icon-btn dl" data-dl="p14" title="下載此面板 PNG">⤓</button></header>
+    <header class="panel-head"><span class="pno">14</span><h3>訊號可信度</h3><span class="psub">含真實回測</span><button class="icon-btn dl" data-dl="p14" title="下載此面板 PNG">⤓</button></header>
     <div class="panel-body">
       <ul class="bars blue" id="confidence-bars"></ul>
     </div>
@@ -217,7 +217,7 @@
   </article>
 
   <article class="panel glass span-10" id="p18">
-    <header class="panel-head"><span class="pno">18</span><h3>主力追蹤總評判</h3><span class="psub">MLP-AI 規則式結論</span><button class="icon-btn dl" data-dl="p18" title="下載此面板 PNG">⤓</button></header>
+    <header class="panel-head"><span class="pno">18</span><h3>主力追蹤總評判</h3><span class="psub">規則式綜合結論</span><button class="icon-btn dl" data-dl="p18" title="下載此面板 PNG">⤓</button></header>
     <div class="panel-body">
       <div class="verdict">
         <div class="verdict-main"><span class="verdict-label">主力語意：</span><b id="verdict-semantic">—</b><span class="tag" id="verdict-tag">—</span></div>
@@ -243,7 +243,7 @@
 </section>
 
 <footer class="foot-note">
-  <p>本儀表板所有指標皆由公開資料（TWSE、TPEx、FinMind）以固定公式計算，僅供研究參考，不構成投資建議。即時報價依交易所提供，可能有延遲。</p>
+  <p>本儀表板所有指標皆由公開資料（TWSE、TPEx、FinMind）以固定公式計算（規則式，不含任何 AI／機器學習模型），僅供研究參考，不構成投資建議。即時報價依交易所提供，可能有延遲。</p>
   <p id="engine-note"></p>
 </footer>
 </div>

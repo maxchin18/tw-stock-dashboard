@@ -439,7 +439,7 @@ export function analyze(bundle, opts = {}) {
       shortState, mainForce, chipStructure,
       nextDayRisk, chipHealth, chipHealthLabel, healthParts,
       support, resistance, riskLevel, annVol, r5, r20, pos20,
-      warning: light === 'red' ? 'AI WARNING' : light === 'yellow' ? 'AI WATCH' : 'AI NORMAL',
+      warning: light === 'red' ? '高風險警示' : light === 'yellow' ? '觀望' : '正常',
       light,
     },
     radar: { axes: radarAxes, total: totalScore, grade },

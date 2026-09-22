@@ -129,7 +129,7 @@ export function renderPanels(a) {
 
   // 02
   const wb = $('warn-banner');
-  wb.textContent = { red: '⚠ AI WARNING', yellow: '◎ AI WATCH', green: '✓ AI NORMAL' }[d.light];
+  wb.textContent = { red: '⚠ 高風險警示', yellow: '◎ 觀望', green: '✓ 正常' }[d.light];
   wb.className = `warn-banner ${d.light}`;
   const trendCls = d.trendScore >= 4 ? 'pos' : d.trendScore <= 1 ? 'neg' : 'warn-c';
   $('decision-kv').innerHTML = kv([
@@ -226,7 +226,7 @@ export function renderPanels(a) {
 
   // 14
   const cf = a.confidence;
-  $('confidence-bars').innerHTML = bars([{ name: 'AI CONFIDENCE', score: cf.confidence, note: '四項平均' }, ...cf.items], { color: 'var(--blue)', showNote: true });
+  $('confidence-bars').innerHTML = bars([{ name: '綜合可信度', score: cf.confidence, note: '四項平均' }, ...cf.items], { color: 'var(--blue)', showNote: true });
 
   // 15
   const cp = a.chipSummary;
@@ -264,7 +264,7 @@ export function renderPanels(a) {
   $('verdict-semantic').textContent = v.semantic;
   $('verdict-semantic').style.color = d.r5 > 1 ? 'var(--up)' : d.r5 < -1 ? 'var(--down)' : 'var(--amber)';
   $('verdict-tag').textContent = v.tag;
-  $('verdict-text').textContent = `AI 結論：${v.conclusion}`;
+  $('verdict-text').textContent = `結論：${v.conclusion}`;
 }
 
 /* ---------- 分頁 ---------- */
