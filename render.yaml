@@ -1,0 +1,16 @@
+# Render Blueprint：一鍵部署 https://render.com/deploy?repo=https://github.com/maxchin18/tw-stock-dashboard
+services:
+  - type: web
+    name: tw-stock-dashboard
+    runtime: node
+    region: singapore
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: HISTORY_MONTHS
+        value: "7"

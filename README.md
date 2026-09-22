@@ -145,7 +145,9 @@ scripts/verify-live.js    線上交叉驗證
 
 ## 部署
 
-任何能跑 Node.js 20+ 的環境皆可：`node server.js`。在 Render / Railway / Fly.io 等平台把啟動指令設為 `npm start` 並開放 `PORT` 即可；伺服器需要能連到 `twse.com.tw`、`tpex.org.tw`、`finmindtrade.com`。
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/maxchin18/tw-stock-dashboard)
+
+倉庫內含 `render.yaml`（Render Blueprint，free 方案、singapore 區域），按上面的按鈕即可一鍵部署。任何能跑 Node.js 20+ 的環境皆可：`node server.js`。在 Render / Railway / Fly.io 等平台把啟動指令設為 `npm start` 並開放 `PORT` 即可；伺服器需要能連到 `twse.com.tw`、`tpex.org.tw`、`finmindtrade.com`。
 
 ## 免責聲明
 
